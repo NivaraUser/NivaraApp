@@ -1,0 +1,49 @@
+﻿
+ <link href="~/css/Main.css" rel="stylesheet" type="text/css" />
+@model List<Nivara.Models.PreDefinedTaskModel>
+ 
+@foreach (var item in Model)
+{
+    <div class="col-lg-3 col-xxl-3">
+        <!-- project card -->
+        <div class="card d-block" >
+            <div class="card-body">
+             @if (ViewBag.IsAdmin)
+                        {
+                <div class="dropdown card-widgets">
+                    <a href="#" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="true">
+                        <i class="dripicons-dots-3"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
+
+                        @*<div class="dropdown-menu dropdown-menu-end">*@
+                        <!-- item-->
+                       
+                            <a href="@Url.Action("Manage", "PreDefinedTask", new { @id = "" + item.Id + "" })" class="dropdown-item"><i class="mdi mdi-pencil me-1"></i>Edit</a>
+                            <a href="#" onclick="DeletePreDefinedTask(@item.Id)" class="dropdown-item"><i class="mdi mdi-delete me-1"></i>Delete</a>
+                    </div>
+                </div>
+                }
+                <!-- project title-->
+                <div class="mb-3"><img src="~/PreDefinedTaskLogo/@item.LogoName" alt="logo" style="width:50px; height:50px;" /></div>
+
+                <h4 class="mt-0">
+                    <a href="#" onclick="ShowTaskDetails(@item.Id)" class="text-title" data-toggle="modal" data-target="#exampleModal">@item.JobTitle</a>
+                </h4>
+                <p class="text-muted font-13 mb-3">
+                    @Html.Raw(@item.ServiceDescription)
+                    <a href="javascript:void(0);" onclick="ShowTaskDetails(@item.Id)" class="fw-bold text-muted" data-toggle="modal" data-target="#exampleModal"> &nbsp; view more</a>                </p>
+                <h5 class="mt-0 amazon">
+                    @item.ETD
+                </h5>
+                @*<h6 class="mt-0 Submit">
+                    Looking for something different?<br />
+                    Submit your custom request victory
+                </h6>*@
+                <a class="btn btn-primary queue-btn"  id="btnAddToMyQueue" href ="@Url.Action("AddToMyQueue","UsersTask",new { preDefinedTaskId=item.Id })">Add to my queue</a>
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+
+    </div>
+    <!-- end row-->
+}

@@ -1,0 +1,139 @@
+﻿@model List<Nivara.Models.EmployeesTaskModel>
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+@*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
+
+<!-- Start Content-->
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <a href="@Url.Action("Manage","Employee")" id="addEmployee" class="page-title" style="float:right"> <i class="mdi mdi-plus-box-multiple"></i>&nbsp; Add Employee</a>
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-pane show active" id="basic-datatable-preview">
+                        <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Task
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.EmployeeName
+                                        </td>
+                                        <td>
+                                            @item.TaskName
+                                        </td>
+
+                                        <td>
+                                            <a href="@Url.Action("Manage","UsersTask",new { @id=""+item.TaskId+""})"> View</a>
+                                            <a href="#" data-task="@item.TaskId" data-receiver="@item.AspNetUserId" class="createTaskChat"> Chat</a>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                                <tr>
+                                    <td>
+                                        Chandra
+                                    </td>
+                                    <td>
+                                        TestTask
+                                    </td>
+
+                                    <td>
+                                        <a href="@Url.Action("Manage","UsersTask",new { @id=""+123+""})"> View</a>
+                                        <a href="#" data-task="123" data-receiver="123" class="createTaskChat"> Chat</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div> <!-- end preview-->
+                </div> <!-- end card body-->
+            </div> <!-- end card -->
+            <partial name="~/Views/Chat/_ChatPartialView.cshtml" />
+        </div><!-- end col-->
+    </div>
+    <!-- end row-->
+</div>
+<script>
+    $(".createTaskChat").click(function () {
+        CreateTaskChat($(this).attr("data-task"), $(this).attr("data-receiver"));
+    })
+
+</script>
+@*<script>
+    $("#addEmployee").click(function () {
+        $(".nivaraLoader").show();
+    })
+    $(".editEmp").click(function () {
+        $(".nivaraLoader").show();
+    })
+
+    function DeleteEmployee(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this  record!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $(".nivaraLoader").show();
+             $.ajax({
+                 url: '@Url.Action("Delete", "Employee")',
+                 data: { id: id },
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     $(".nivaraLoader").hide();
+                     if (data.result)
+                         window.location = data.url;
+                     else
+                         swal("Something went wrong!");
+                },
+                 error: function (res) {
+                     $(".nivaraLoader").hide();
+                     swal("Something went wrong!");
+                }
+            });
+
+                }
+                //else {
+                //    swal("Your imaginary file is safe!");
+                //}
+            });
+    }
+</script>*@
+

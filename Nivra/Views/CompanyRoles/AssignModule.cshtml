@@ -1,0 +1,49 @@
+﻿@model Nivara.Models.CompanyRolesModel
+
+@{
+    ViewBag.Title = "Assign Module";
+}
+<div class="card card1 left-side">
+    @using (Html.BeginForm("AssignModule", "CompanyRoles", FormMethod.Post, new { @class = "needs-validation mb-4", role = "form", @novalidate = "true" }))
+    {
+        <div class="row justify-content-center my-auto">
+            <div class="col-md-8 col-10 my-5 lfty-sd">
+
+                <div class="form-group">
+                    @Html.DropDownListFor(model => model.Id, new SelectList(Model.CompanyRoles, "Id", "Name"), "Choose Role", new { @class = "form-control", @required = "true" })
+                    @Html.ValidationMessageFor(z => z.Id, null, new { @class = "invalid-feedback" })
+                </div>
+                <div id="rolePages">
+
+                </div>
+                <button type="submit" id="submitBtn" style="border-radius: 10px; width: 12%; margin-left:300px" class="btn btn-xl btn-info">Save</button>
+
+                @*<div class="row justify-content-center my-3 px-3"> <button type="submit" class="btn-block btn-color">Save</button> </div>*@
+                <div class="row justify-content-center my-5 px-5 social-icns">
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+         $('#Id').change(function () {
+             var companyRoleId = $('#Id').val();
+             $.ajax({
+                url: '@Url.Action("GetModules", "CompanyRoles")',
+                 data: { companyRoleId: companyRoleId},
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     $('#rolePages').html(data);
+                },
+                error: function (res) {
+                }
+            });
+        });
+    });
+</script>

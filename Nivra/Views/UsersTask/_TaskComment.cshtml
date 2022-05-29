@@ -1,0 +1,32 @@
+﻿@model List<Nivara.Models.TaskCommentsModel>
+
+<div class="form-group">
+    <i class="mdi mdi-comment-multiple-outline text-muted"></i>
+    Comments <a href="#" id="commentShowHide">Show</a>
+</div>
+<table cellpadding="3" cellspacing="3" border="0" class="ui-hide-el jq-table-comments">
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(string.IsNullOrEmpty(item.CompanyName) ? item.EmployeeName: item.CompanyName) &nbsp;&nbsp;&nbsp;&nbsp;  @item.Comment<br /><h6>@item.CreatedDateTime</h6></td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+<script>
+    $("#commentShowHide").click(function () {
+        if ($(this).text() == 'Show') {
+            $(this).text('Hide');
+            $(".jq-table-comments").removeClass('ui-hide-el');
+        }
+        else {
+            $(this).text('Show');
+            $(".jq-table-comments").addClass('ui-hide-el');
+        }
+    });
+</script>

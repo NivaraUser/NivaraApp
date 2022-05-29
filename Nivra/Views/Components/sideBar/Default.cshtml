@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Nivara.Models.ModuleModel>
+@{ 
+    var parentModules = Model.Where(x => x.ParentModuleId == null).Select(x => new ModuleModel { Id = x.Id, ModuleName = x.ModuleName, IconName = x.IconName, Url= x.Url  }).ToList();
+ }
+<ul class="metismenu side-nav">    
+    @foreach (var parent in parentModules)
+    {
+        //if (Model.Any(x => x.ParentModuleId == parent.Id))
+        //{
+    <li class="side-nav-item" style="color:#2E51CD;" >
+        <a href="@(string.IsNullOrEmpty(parent.Url)?"#":"/"+parent.Url)" class="side-nav-link" style="color:#2E51CD;">
+            <i class="uil-home-alt" style="color:#2E51CD;"></i>
+            <span style="color:#2E51CD;"> @parent.ModuleName </span>
+        </a>
+
+        @if (ViewBag.EmployeeId==0 && parent.ModuleName=="My Project")
+        {
+            @*<a href="@Url.Action("Manage","UsersTask")"><i class="fa fa-plus-square-o"></i></a>*@
+        }
+
+        <ul class="side-nav-second-level" aria-expanded="false">
+            @foreach (var module in Model.Where(x => x.ParentModuleId == parent.Id))
+            {
+                <li>
+                    <a href="~/@module.Url">@module.ModuleName</a>
+                </li>
+            }
+        </ul>
+    </li>
+        //}
+    }
+
+</ul> 

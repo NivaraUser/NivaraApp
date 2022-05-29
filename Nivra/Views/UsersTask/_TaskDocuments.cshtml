@@ -1,0 +1,33 @@
+﻿@model Nivara.Models.UsersTaskModel
+<div class="form-group">
+    <i class="mdi mdi-comment-multiple-outline text-muted"></i>
+    Attachments <a href="#" id="attachmentsShowHide">Show</a>
+</div>
+<table cellpadding="3" cellspacing="3" border="0" class="ui-hide-el jq-table-attachments">
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model.UsersTaskDocuments)
+            {
+                <tr>
+                    <td><a href="~/Documents/@item.DocumentName" target="_blank">@item.DocumentName</a></td>
+                    <td><a href="#" onclick="DeleteUsersTaskDocument(@item.Id, @item.UsersTaskId)">X</a></td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+<script>
+    $("#attachmentsShowHide").click(function () {
+        if ($(this).text() == 'Show') {
+            $(this).text('Hide');
+            $(".jq-table-attachments").removeClass('ui-hide-el');
+        }
+        else {
+            $(this).text('Show');
+            $(".jq-table-attachments").addClass('ui-hide-el');
+        }
+    });
+</script>
+

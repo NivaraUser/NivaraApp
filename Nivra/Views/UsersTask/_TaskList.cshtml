@@ -1,0 +1,113 @@
+﻿@model List<Nivara.Models.UsersTaskModel>
+
+@foreach (var item in Model)
+{
+    <div class="col-lg-3 col-xxl-3">
+        <!-- project card -->
+        <div class="card d-block">
+            <div class="card-body">
+                <div class="dropdown card-widgets">
+                    <a href="#" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="true">
+                        <i class="dripicons-dots-3"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
+
+                        @*<div class="dropdown-menu dropdown-menu-end">*@
+                        <!-- item-->
+
+                        <a href="@Url.Action("Manage", "UsersTask", new { @id = "" + item.Id + "" })" class="dropdown-item"><i class="mdi mdi-pencil me-1"></i>Edit</a>
+                        <a href="#" data-task="@item.Id" data-taskname="@item.ProjectName" data-receiver="@item.EmployeeAspNetUserId" class="dropdown-item createTaskChat"><i class="mdi mdi-chat me-1"></i>Chat</a>
+                        @if (ViewBag.EmployeeId == 0)
+                        {
+                            <a href="#" onclick="DeleteUsersTask(@item.Id)" class="dropdown-item"><i class="mdi mdi-delete me-1"></i>Delete</a>
+                        }
+                    </div>
+                </div>
+                <!-- project title-->
+
+                <h4 class="mt-0">
+                    <a href="#" onclick="ShowTaskDetails(@item.Id)" class="text-title" data-toggle="modal" data-target="#exampleModal">@item.ProjectName</a>
+                </h4>
+                <div class="badge bg-success mb-3">@item.TaskStatusName</div>
+                <h6 class="mt-0">
+                    @item.CompanyName
+                </h6>
+                @*<p class="text-muted font-13 mb-3">
+            @item.ProjectDescription
+
+            <a href="javascript:void(0);" class="fw-bold text-muted">view more</a>
+        </p>*@
+
+            <p class="text-muted font-13 mb-3">
+                @Html.Raw(item.ProjectDescription)
+                <a href="javascript:void(0);" class="fw-bold text-muted">view more</a>
+            </p>
+
+                <p class="text-muted font-13 mb-3">
+                    @foreach (var doc in @item.UsersTaskDocuments)
+                    {
+
+                        <a href="~/Documents/@doc.DocumentName" target="_blank">@doc.DocumentName</a>
+                    }
+                </p>
+                <!-- project detail-->
+                @*<p class="mb-1">
+            <span class="pe-2 text-nowrap mb-2 d-inline-block">
+                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                <b>21</b> Tasks
+            </span>
+            <span class="text-nowrap mb-2 d-inline-block">
+                <i class="mdi mdi-comment-multiple-outline text-muted"></i>
+                <b>741</b> Comments
+            </span>
+        </p>*@
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-3">
+                        <!-- project progress-->
+                        @{ var progressPer = 0;
+
+                            if (item.TaskStatusId == (int)Nivara.Common.Enums.TaskStatusEnum.Active)
+                            {
+                                progressPer = 25;
+                            }
+                            else if (item.TaskStatusId == (int)Nivara.Common.Enums.TaskStatusEnum.Testing)
+                            {
+                                progressPer = 50;
+                            }
+                            else if (item.TaskStatusId == (int)Nivara.Common.Enums.TaskStatusEnum.Closed)
+                            {
+                                progressPer = 100;
+                            }
+                        }
+                        <p class="mb-2 fw-bold">Progress <span class="float-end">@progressPer%</span></p>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="@progressPer" aria-valuemin="0" aria-valuemax="100" style="width: @progressPer%;">
+
+                            </div><!-- /.progress-bar -->
+                        </div><!-- /.progress -->
+                    </li>
+                </ul>
+
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+
+    </div>
+    <!-- end row-->
+}
+
+<script>
+    $(document).ready(function () {
+        $(".createTaskChat").click(function () {
+            debugger;
+            if (@ViewBag.CompanyId != 0 && '@ViewBag.IsAdmin' == 'False') {
+                CreateCompanyTaskChat($(this).attr("data-task"), $(this).attr("data-taskname"), $(this).attr("data-receiver"));
+            }
+            else if (@ViewBag.CompanyId != 0 && @ViewBag.EmployeeId == 0 && '@ViewBag.IsAdmin' == 'True') {
+                CreateAdminTaskChat($(this).attr("data-task"), $(this).attr("data-taskname"), $(this).attr("data-receiver"));
+            }
+            else {
+                CreateEmployeeTaskChat($(this).attr("data-task"), $(this).attr("data-taskname"), $(this).attr("data-receiver"));
+            }
+        });
+    });
+</script>

@@ -1,0 +1,212 @@
+﻿@model List<Nivara.Models.EmployeeModel>
+@using Nivara.Common.Helpers
+@{ ViewBag.Title = "Employees";}
+
+<style>
+    table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+        background-color: white;
+        color: #6c757d;
+    }
+</style>
+<!-- Start Content-->
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <a href="@Url.Action("Manage","Employee")" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Employee</a>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end" style="float:right; display:none;">
+                                <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                                <button type="button" class="btn btn-light mb-2 ">Export</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        @*<table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">*@
+                            <table class="table table-bordered table-striped" id="tblEmployee">
+                               <thead class="table-light">
+                                    <tr>
+                                        <th width="20%">
+                                            Name
+                                        </th>
+                                        <th width="20%">
+                                            Email
+                                        </th>
+                                        <th width="20%">
+                                            Contact Number
+                                        </th>
+                                        <th width="10%">
+                                            Country
+                                        </th>
+                                        <th width="10%">
+                                            State
+                                        </th>
+                                        <th width="10%">
+                                            City
+                                        </th>
+                                        <th width="20%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @*@if (!string.IsNullOrEmpty(item.ProfilePicture))
+                                                {
+                                                    <img src="~/images/@item.ProfilePicture" alt="contact-img" title="contact-img" class="rounded me-3" height="48" />
+                                                }
+                                                <p class="m-0 d-inline-block align-middle font-16">
+                                                    <a href="apps-ecommerce-products-details.html" class="text-body"> @item.UserName</a>
+                                                </p>*@
+                                                @item.UserName
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Manage","Employee",new { @id=item.Id.ToString()})">@item.Email</a>
+                                            </td>
+                                            <td>
+                                                @item.ContactNumber
+                                            </td>
+                                            <td>
+                                                @item.CountryName
+                                            </td>
+                                            <td>
+                                                @item.StateName
+                                            </td>
+                                            <td>
+                                                @item.CityName
+                                            </td>
+                                            <td class="table-action">
+                                                <a href="javascript:void(0);" onclick="DeleteEmployee(@item.Id)" class="action-icon" title="Delete"> <i class="mdi mdi-delete"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+</div>
+
+
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+</div>
+
+<script src="~/js/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tblEmployee").DataTable({
+            order: [],
+            scrollX: true,
+            "iDisplayLength": 10,
+            "language": {
+                "emptyTable": "No record found"
+            },
+            columnDefs: [{
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }]
+        });
+    });
+
+    $("#addEmployee").click(function () {
+        $(".nivaraLoader").show();
+    })
+    //$(".editEmp").click(function () {
+    //    $(".nivaraLoader").show();
+    //})
+
+    function DeleteEmployee(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this record!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $(".nivaraLoader").show();
+             $.ajax({
+                 url: '@Url.Action("Delete", "Employee")',
+                 data: { id: id },
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     $(".nivaraLoader").hide();
+                     if (data.result)
+                         window.location = data.url;
+                     else
+                         swal("Something went wrong!");
+                },
+                 error: function (res) {
+                     $(".nivaraLoader").hide();
+                     swal("Something went wrong!");
+                }
+            });
+
+                }
+                //else {
+                //    swal("Your imaginary file is safe!");
+                //}
+            });
+    }
+
+    function ResetEmployeePassword(id, email) {
+        swal({
+            title: "Are you sure?",
+            text: "You want to reset password",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $(".nivaraLoader").show();
+             $.ajax({
+                 url: '@Url.Action("ResetEmployeePassword", "Employee")',
+                 data: { id: id , email : email },
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     $(".nivaraLoader").hide();
+                     if (data.result)
+                         window.location = data.url;
+                     else
+                         swal("Something went wrong!");
+                },
+                 error: function (res) {
+                     $(".nivaraLoader").hide();
+                     swal("Something went wrong!");
+                }
+            });
+
+                }
+                //else {
+                //    swal("Your imaginary file is safe!");
+                //}
+            });
+    }
+</script>
+

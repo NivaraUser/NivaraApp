@@ -1,0 +1,183 @@
+﻿@model Nivara.Models.PreDefinedTaskModel
+@{
+    ViewBag.Title = "Create Pre Defined Project";
+
+}
+
+
+<div class="container-fluid">   
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                </div>
+                <h4 class="page-title">Create Pre Defined Project</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @using (Html.BeginForm("Manage", "PreDefinedTask", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation mb-4", role = "form", @novalidate = "true" }))
+                    {
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="mb-3">
+                                    <label for="JobTitle" class="form-label">Job Title</label>
+                                    @Html.TextBoxFor(x => x.JobTitle, new { @class = "form-control", @placeholder = "Enter Job Title", @required = "true" })
+                                    @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })
+
+                                    @*<input type="text" id="projectname" class="form-control" placeholder="Enter project name">*@
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="project-overview" class="form-label">Service Description</label>
+                                    @Html.TextAreaFor(x => x.ServiceDescription, new { @class = "form-control", rows = "5", @placeholder = "Enter some brief service description..", @required = "true" })
+                                    @Html.ValidationMessageFor(m => m.ServiceDescription, "", new { @class = "text-danger" })
+                                                                       
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ETD" class="form-label">Job Title</label>
+                                    @Html.TextBoxFor(x => x.ETD, new { @class = "form-control", @placeholder = "Enter ETD", @required = "true" })
+                                    @Html.ValidationMessageFor(m => m.ETD, "", new { @class = "text-danger" })
+                                </div>
+                            </div> <!-- end col-->
+                            <div class="col-xl-6">
+                                <div class="mb-3 mt-3 mt-xl-0">
+                                    <label for="logo" class="mb-0">Logo</label>
+                                    <p class="text-muted font-14">Recommended thumbnail size 800x400 (px).</p>
+
+                                    <div class="dropzone dz-clickable" id="myAwesomeDropzone">
+                                        <div class="fallback">
+                                            <input name="postedFiles" id="file" type="file" style="display:none" />
+                                        </div>
+
+                                        <div class="dz-message needsclick" onclick="uploadFile()">
+                                            <i class="h3 text-muted dripicons-cloud-upload"></i>
+                                            <h4>Drop files here or click to upload.</h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- Preview -->
+                                    <div class="dropzone-previews mt-3" id="file-previews"></div>
+
+                                    <!-- file preview template -->
+                                    <div class="d-none" id="uploadPreviewTemplate" name="postedFiles">
+                                        <div class="card mt-1 mb-0 shadow-none border">
+                                            <div class="p-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto">
+                                                        <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
+                                                    </div>
+                                                    <div class="col ps-0">
+                                                        <a href="javascript:void(0);" class="text-muted fw-bold" data-dz-name></a>
+                                                        <p class="mb-0" data-dz-size></p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!-- Button -->
+                                                        <a href="" class="btn btn-link btn-lg text-muted" data-dz-remove>
+                                                            <i class="dripicons-cross"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end file preview template -->
+                                </div>
+                                <button type="submit" id="submitBtn" style="border-radius: 10px; width:137px" class="btn btn-xl btn-info">Submit</button>
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row -->
+                    }
+                </div> <!-- end card-body -->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+
+    </div>
+    <!-- end row-->
+    <div class="rightbar-overlay"></div>
+    <!-- /End-bar -->
+    <!-- bundle -->
+
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#ServiceDescription").summernote({
+            height: 80,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']],
+                ['table', ['table']],
+            ]
+        });
+    });
+</script>
+<script>
+    var formdata = new FormData(); //FormData object
+    $(document).ready(function () {
+
+        $("#fileInput").on("change", function () {
+            var fileInput = document.getElementById('fileInput');
+            //Iterating through each files selected in fileInput
+            for (i = 0; i < fileInput.files.length; i++) {
+
+                var sfilename = fileInput.files[i].name;
+                let srandomid = Math.random().toString(36).substring(7);
+
+                formdata.append(sfilename, fileInput.files[i]);
+
+                var markup = "<tr id='" + srandomid + "'><td>" + sfilename + "</td><td><a href='#' onclick='DeleteFile(\"" + srandomid + "\",\"" + sfilename +
+                    "\")'>X</a></td></tr>"; // Binding the file name
+                $("#FilesList tbody").append(markup);
+
+            }
+            chkatchtbl();
+            $('#fileInput').val('');
+        });
+
+        $("#btnupload").click(function () {
+            formdata.append('uploadername', $('#txtuploader').val());
+            $.ajax({
+                url: '/Home/UploadFiles',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: formdata,
+                async: false,
+                success: function (result) {
+                    if (result != "") {
+                        alert(result);
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        });
+    });
+    function DeleteFile(Fileid, FileName) {
+        formdata.delete(FileName)
+        $("#" + Fileid).remove();
+        chkatchtbl();
+    }
+    function chkatchtbl() {
+        if ($('#FilesList tr').length > 1) {
+            $("#FilesList").css("visibility", "visible");
+        } else {
+            $("#FilesList").css("visibility", "hidden");
+        }
+    }
+
+    function uploadFile() {
+        $("#file").click();
+    }
+</script>

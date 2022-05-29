@@ -1,0 +1,265 @@
+namespace Nivara.Web.wwwroot.css
+{
+    public class Main
+    {
+    }
+}
+
+.btn-info:hover {
+    border: 2px solid #2E51CD !important;
+}
+
+
+
+.form-control:: -webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #909;
+}
+
+.form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #909;
+    opacity: 1;
+}
+
+.form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #909;
+    opacity: 1;
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #909;
+}
+
+
+a.text-title {
+    color: #0f0f0f !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+    font-family: Poppins !important;
+}
+
+.text-muted {
+    color: #0f0f0f !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    font-family: Poppins !important;
+}
+
+.Submit {
+    color: #0f0f0f !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    font-family: Poppins !important;
+}
+
+.amazon {
+    color: #0f0f0f !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    font-family: Poppins !important;
+}
+
+.icon-section {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+}
+
+
+.d-lg-block {
+    background: unset;
+}
+
+.navbar-custom {
+    background: #f4f7fb !important;
+}
+
+    .navbar-custom .topbar-right-menu .nav-link {
+        background: #f4f7fb;
+    }
+
+.app-search .form-control {
+    background: #fff !important;
+}
+
+.nav-btn {
+    color: #667ABD !important;
+    background: #fff !important;
+    border: unset !important;
+}
+
+.buttons-new:hover {
+    color: #667ABD !important;
+    background: #fff !important;
+    border: unset !important;
+}
+.buttons-new {
+    color: #667ABD !important;
+    background: unset !important;
+    border: unset !important;
+    box-shadow: unset !important;
+}
+.dropdown-item {
+    color: #667ABD !important;
+}
+
+.main:hover {
+    background: #2E51CD !important;
+    color: #fff !important;
+}
+
+.main-ticket-link {
+    color: #2E51CD;
+}
+
+a.create-task {
+    color: #667ABD;
+    background: #fff;
+    border: unset;
+    box-shadow: unset;
+}
+
+a.btn-danger:hover {
+    background: #2E51CD !important;
+}
+
+.btn-primary:hover {
+    border: 2px solid #2E51CD;
+}
+
+.swal-title {
+    color: #0f0f0f !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+    font-family: Poppins !important;
+}
+
+.swal-text {
+    color: #0f0f0f !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    font-family: Poppins !important;
+}
+
+.swal-button--danger {
+    background: #2E51CD;
+}
+
+    .swal-button--danger:hover {
+        border: 1px solid #2E51CD !important;
+        background: #fff !important;
+        color: #2E51CD !important;
+    }
+
+.swal-button--cancel {
+    color: #2E51CD !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    font-family: Poppins !important;
+    background: #fff !important;
+    border: 1px solid #2E51CD;
+}
+
+    .swal-button--cancel:not([disabled]):hover {
+        background: unset !important;
+    }
+
+.content-page {
+    background: unset !important;
+}
+
+.card {
+    box-shadow: unset !important;
+}
+body{
+    background:unset;
+}
+.navbar-custom{
+    box-shadow:unset;
+}
+
+.container-fluid {
+    background: #f4f7fb !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.navbar-custom {
+    box-shadow: unset !important;
+}
+.row {
+    background: #f4f7fb !important;
+    margin-bottom: 0px !important;
+}
+.form-section {
+    background: unset !important;
+}
+.mb-2 .my-2 {
+    margin-bottom: 0px !important;
+}
+.left-side-menu{
+    box-shadow:unset !important;
+}
+
+
+
+.icon-section{
+    background:unset;
+}
+.side-nav-link:hover {
+    background #2E51CD !important;
+    color: #fff !important;
+}
+.section-one {
+    margin-bottom: 0px !important;
+}
+.queue-btn {
+    background: unset;
+    border-color: #2E51CD;
+    color: #2E51CD;
+    border-radius: 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    width: 237px;
+    height: 48px;
+    padding: 11px 0;
+    font-family: poppins;
+    font-weight: 600;
+}
+.form-section-parts {
+    background: #F4F7FB;
+    border: unset;
+    font-size: 14px;
+    font-family: Poppins;
+    font-weight: 400;
+    color: #667ABD;
+}
+.form-section-label {
+    font-size: 14px;
+    font-family: Poppins;
+    font-weight: 600;
+    color: #0F0F0F
+}
+.form-section-parts:disabled {
+    background: #F4F7FB;
+}
+.form-section-label-dropzone {
+    font-size: 14px;
+    font-family: Poppins;
+    font-weight: 400;
+    color: #667abd;
+    border: 1px dashed #2E51CD;
+}
+.thumbnail {
+    font-size: 14px;
+    font-family: Poppins;
+    font-weight: 600;
+    color: #0F0F0F !important
+}
+.new-danger {
+    font-size: 14px;
+    font-family: Poppins;
+    font-weight: 600;
+    color: #0F0F0F;
+}
+.new-modal-header{
+}

@@ -1,0 +1,144 @@
+﻿@model List<Nivara.Models.CompanyRolesModel>
+@{
+    ViewBag.Title = "Roles";
+}
+<style>
+    table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+        background-color: white;
+        color: #6c757d;
+    }
+</style>
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <a href="#" class="btn btn-danger mb-2" data-toggle="modal" data-target="#myModal"> <i class="mdi mdi-plus-circle me-2"></i> Add Role</a>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end" style="float:right;">
+                                <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                                <button type="button" class="btn btn-light mb-2">Export</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="roles-datatable">
+                            <thead class="table-light">
+                                <tr>
+                                  
+                                    <th class="all">
+                                        Name
+                                    </th>
+                                    <th style="width: 85px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                       
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        
+                                      <td class="table-action">
+                                       
+                                        <a href="#" onclick="manageRole(@item.Id, '@item.Name')" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                        <a href="javascript:void(0);" onclick="DeleteRole(@item.Id)" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                      </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            @using (Html.BeginForm("Manage", "CompanyRoles", FormMethod.Post, new { @class = "needs-validation mb-4", role = "form", @novalidate = "true" }))
+            {
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" style="text-align: left; width: 100%;">Create Role</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="Id" id="CompanyId" />
+                        <input type="text" name="Name" id="Name" class="form-control" placeholder="Role Name" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#roles-datatable").DataTable();
+    });
+    function manageRole(id, roleName) {
+        $('#CompanyId').val(id);
+        $('#Name').val(roleName);
+        $('#myModal').modal('show');
+    }
+
+    function DeleteRole(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this record!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $(".nivaraLoader").show();
+             $.ajax({
+                 url: '@Url.Action("Delete", "CompanyRoles")',
+                data: { id: id },
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                success: function (data) {
+                $(".nivaraLoader").hide();
+                if (data.result)
+                window.location = data.url;
+                else
+                swal("Something went wrong!");
+                },
+                error: function (res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+                }
+                });
+
+                }
+                //else {
+                //    swal("Your imaginary file is safe!");
+                //}
+                });
+    }
+</script>

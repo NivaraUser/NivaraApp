@@ -1,0 +1,281 @@
+﻿@model Nivara.Models.RegisterViewModel
+
+@{
+    Layout = null;
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.10/jquery.validate.unobtrusive.js"></script>
+
+<script type="text/javascript">
+    //$(function () {
+    //    $('#register').click(function () {
+    //        $('#registerForm').validate();
+
+    //        if ($('#registerForm').valid()) {
+    //            alert("validate");
+    //        } else {
+    //            alert("invalid");
+    //        }
+    //    })
+    //})
+
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Signup</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="~/css/toaster.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="login-outer">
+        <div class="mx-auto">
+            <div class="card card0">
+                <div class="d-flex flex-lg-row flex-column-reverse">
+                    <div class="card card1 left-side">
+                        <div class="row justify-content-center px-3 mb-3">
+                            <div class="col-md-6 text-center">
+                                <img id="logo" src="https://cdn.shopify.com/s/files/1/0525/9542/5477/files/Nivara_Logo-01.svg" alt="">
+                            </div>
+                            <div class="col-md-6 text-right side-shape">
+
+                            </div>
+                        </div>
+
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "needs-validation mb-4", role = "form", id = "registerForm", enctype = "multipart/form-data", @novalidate = "true" }))
+                        {
+                            <div class="row justify-content-center my-auto">
+                                <div class="col-md-8 col-10 my-5 lfty-sd">
+                                    <h3 class="heading pl-0">Create Your Own Account</h3>
+
+                                    <h6 class="msg-info pl-0">Already have an account?  @Html.ActionLink("Login", "Login", null, new { @class = "text-reset" })</h6>
+                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Company Name", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Your Email", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                    @Html.TextBoxFor(x => x.Website, new { @class = "form-control", @placeholder = "Website", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.Website, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        Is Admin : @Html.CheckBoxFor(x => x.IsAdmin, new { @class = "form-control"})
+                                    </div>
+                                    @Html.PasswordFor(x => x.Password, new { @class = "form-control", @placeholder = "Password", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    @Html.PasswordFor(x => x.ConfirmPassword, new { @class = "form-control", @placeholder = "ConfirmPassword", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                    @Html.TextBoxFor(x => x.Address, new { @class = "form-control", @placeholder = "Address", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                    </div>
+                                    @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control", @placeholder = "Postal Code", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+                                    </div>
+                                    @Html.TextBoxFor(x => x.PhoneNo, new { @class = "form-control", @placeholder = "Contact Number", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.PhoneNo, "", new { @class = "text-danger" })
+                                    </div>
+                                    @Html.DropDownListFor(model => model.CountryId, new SelectList(Model.Countries, "Id", "Name"), "Choose Country", new { @class = "form-control", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(z => z.CountryId, null, new { @class = "text-danger" })
+                                    </div>
+                                    @Html.DropDownListFor(model => model.StateId, new SelectList(Model.States, "Id", "Name"), "Choose State", new { @class = "form-control", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(z => z.StateId, null, new { @class = "text-danger" })
+                                    </div>
+                                    @Html.DropDownListFor(model => model.CityId, new SelectList(Model.Cities, "Id", "Name"), "Choose City", new { @class = "form-control", @required = "true" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(z => z.CityId, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="row justify-content-center my-2 pt-4">
+                                        <div class="col-md-12">
+                                            <small class="text-muted forget-btn">Minimum 8 characters, should contain an uppercase letter.</small>
+                                        </div>
+
+                                    </div>
+                                    <div class="row justify-content-center my-3 px-3"> <button type="submit" id="register" class="btn-block btn-color">Register</button> </div>
+
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row justify-content-center my-5 px-5 social-icns">
+                            @if (Model.ExternalLogins.Count == 0)
+                            {
+                                <h1>No external login configured</h1>
+                            }
+                            else
+                            {
+                                <form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                                    <div>
+                                        @foreach (var item in Model.ExternalLogins)
+                                        {
+                                            <div class="row justify-content-center my-5 px-5 social-icns">
+
+                                                <div class="col-md-6 lefty">
+                                                    <button type="submit" name="provider" value="@item.Name"> @item.DisplayName</button>
+
+                                                    @*<a href="#" @item.Name type="submit"><img src="~/Content/img/facebook.png" alt=""> @item.DisplayName</a>*@
+                                                </div>
+                                                @*<div class="col-md-6 righty">
+                                                        <a href="#" @item.Name><img src="~/Content/img/google.png" alt=""> Login with Google</a>
+                                                    </div>*@
+
+                                                @*<div class="col-md-6 righty">
+                                                        <button type="submit" name="provider" value="@item.Name" title="sdfhgsdfhsdf"><img src="~/Content/img/google.png" alt=""> @item.DisplayName</button>
+                                                    </div>*@
+                                            </div>
+                                        }
+                                    </div>
+                                </form>
+                            }
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="card card2 right-side">
+                        <div class="my-auto mx-md-5 px-md-5 right pt-4 right-sde">
+                            <div class="left-content-side">
+                                <p>We are more than </p>
+                                <p><strong>just a company</strong></p>
+                                <small>
+                                    Empower smarter design. Go to market faster.<br>
+                                    Spark design-driven innovation.
+                                </small>
+                                <a href="#" class="btn">Learn More</a>
+                            </div>
+                            <div class="login-img text-center">
+                                <img src="~/Content/img/login-img.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-------->
+            <div class="row justify-content-center last-footer">
+                <div class="col-md-6 text-left copyright">
+                    <p>© 2021 Nivara. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 footer-list text-right">
+                    <ul>
+                        <li><a href="">Contact Us</a> </li>
+                        <li>
+                            <a href="">Privacy policy </a>
+                        </li>
+                        <li><a href="">Site Map</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!---->
+        </div>
+    </div>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="~/js/toastr.js"></script>
+    <script type="text/javascript">
+            function successMessage(message) {
+                if (!message)
+                    message = "@Html.Raw(ViewData["SuccessMessage"])";
+
+                if ($.trim(message).length > 0) {
+                    toastr.success(message);
+                }
+            }
+
+             function errorMessage(message) {
+                if (!message)
+                    message = "@Html.Raw(ViewData["ErrorMessage"])";
+
+                 if ($.trim(message).length > 0) {
+                     toastr.error(message);
+                }
+            }
+
+        function warningMessage(message) {
+                if (!message)
+                    message = "@Html.Raw(ViewData["WarningMessage"])";
+
+            if ($.trim(message).length > 0) {
+                toastr.warning(message);
+                }
+            }
+
+            $(function () {
+                successMessage();
+                errorMessage();
+                warningMessage();
+            });
+
+    </script>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(function () {
+        $('#CountryId').change(function () {
+            var countryId = $('#CountryId').val();
+             $.ajax({
+                url: '@Url.Action("GetStatesByCountryId", "Common")',
+                 data: { id: countryId},
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     var option = "<option>Choose State</option>";
+                     $.each(data, function (index, value) {
+                         option += '<option value="' + value.id + '">' + value.name + '</option>';
+                     });
+                     $('#StateId').html(option);
+                },
+                error: function (res) {
+                }
+            });
+        });
+
+         $('#StateId').change(function () {
+             var stateId = $('#StateId').val();
+             $.ajax({
+                url: '@Url.Action("GetCitiesByStateId", "Common")',
+                 data: { id: stateId},
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     var option = "<option>Choose City</option>";
+                     $.each(data, function (index, value) {
+                         option += '<option value="' + value.id + '">' + value.name + '</option>';
+                     });
+                     $('#CityId').html(option);
+                },
+                error: function (res) {
+                }
+            });
+        });
+    });
+    
+</script>

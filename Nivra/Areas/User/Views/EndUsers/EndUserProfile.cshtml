@@ -1,0 +1,195 @@
+﻿@model Nivara.Models.EndUserModel
+@{
+    ViewBag.Title = "Edit EndUser Proflie";
+
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @using (Html.BeginForm("EndUserProfile", "EndUsers", FormMethod.Post, new { @class = "needs-validation mb-4", role = "form", enctype = "multipart/form-data", @novalidate = "true" }))
+                    {
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @if (Model.ProfilePiture != null)
+                                    {
+                                        <img class="rounded-circle avatar-lg" id="ProfilePicture" src="~/images/@Model.ProfilePiture"
+                                             height="100" width="100"
+                                             asp-append-version="true" />
+                                    }
+                                    else
+                                    {
+                                        <img id="ProfilePicture" class="rounded-circle"
+                                             height="100" width="100" src="~/Content/img/avatar.png">
+                                    }
+                                    @*<input type="file" name="Files" multiple />*@
+                                    <div class="form-group">
+                                        <input type="file"
+                                               accept=".png,.jpg,.jpeg,.gif,.tif"
+                                               name="Files"
+                                               class="form-control"
+                                               style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;width:auto"
+                                               onchange="document.getElementById('ProfilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                                        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @placeholder = "Company Name", @required = "true" })
+                                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @placeholder = "Website", @required = "true" })
+                                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Email</label>
+                                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Your Email", @required = "true", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                        @Html.TextBoxFor(x => x.Address, new { @class = "form-control", @placeholder = "Address", @required = "true" })
+                                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Postal Code</label>
+                                        @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control", @placeholder = "Postal Code", @required = "true" })
+                                        @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Phone Number</label>
+                                        @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", @placeholder = "Contact Number", @required = "true" })
+                                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Country</label>
+                                        @Html.DropDownListFor(model => model.CountryId, new SelectList(Model.Countries, "Id", "Name"), "Choose Country", new { @class = "form-control", @required = "true" })
+                                        @Html.ValidationMessageFor(z => z.CountryId, null, new { @class = "invalid-feedback" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">State</label>
+                                        @Html.DropDownListFor(model => model.StateId, new SelectList(Model.States, "Id", "Name"), "Choose State", new { @class = "form-control", @required = "true" })
+                                        @Html.ValidationMessageFor(z => z.StateId, null, new { @class = "invalid-feedback" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">City</label>
+                                        @Html.DropDownListFor(model => model.CityId, new SelectList(Model.Cities, "Id", "Name"), "Choose City", new { @class = "form-control", @required = "true" })
+                                        @Html.ValidationMessageFor(z => z.CityId, null, new { @class = "invalid-feedback" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row col-md-12">
+                                <div class="col-md-12 d-grid" style="text-align:center;margin-top:30px;">
+                                    <button type="submit" id="submitBtn" style="border-radius: 10px; width: 12%" class="btn btn-xl btn-info">Submit</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#submitBtn").click(function () {
+        $(".nivaraLoader").show();
+    })
+
+    $(document).ready(function () {
+        $('#CountryId').change(function () {
+            $(".nivaraLoader").show();
+            var countryId = $('#CountryId').val();
+             $.ajax({
+                url: '@Url.Action("GetStatesByCountryId", "Common")',
+                 data: { id: countryId},
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     var option = "<option>Choose State</option>";
+                     $.each(data, function (index, value) {
+                         option += '<option value="' + value.id + '">' + value.name + '</option>';
+                     });
+                     $('#StateId').html(option);
+                     $(".nivaraLoader").hide();
+                },
+                 error: function (res) {
+                     $(".nivaraLoader").hide();
+                }
+            });
+        });
+
+         $('#StateId').change(function () {
+             var stateId = $('#StateId').val();
+             $(".nivaraLoader").show();
+             $.ajax({
+                url: '@Url.Action("GetCitiesByStateId", "Common")',
+                 data: { id: stateId},
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                 success: function (data) {
+                     var option = "<option>Choose City</option>";
+                     $.each(data, function (index, value) {
+                         option += '<option value="' + value.id + '">' + value.name + '</option>';
+                     });
+                     $('#CityId').html(option);
+                     $(".nivaraLoader").hide();
+                },
+                 error: function (res) {
+                     $(".nivaraLoader").hide();
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,54 @@
+﻿@model List<Nivara.Models.EndUserModel>
+
+@{
+    ViewBag.Title = "End Users";
+}
+<p class="text-right">
+    @Html.ActionLink("Create New", "Manage")
+
+</p>
+<table class="table">
+    <tr>
+        <th>
+            UserName
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Contact Number
+        </th>
+        <th>
+            Address
+        </th>
+       
+        <th>
+            Action
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.PhoneNumber
+            </td>
+            <td>
+                @item.Address
+            </td>
+            <td>
+
+                @Html.ActionLink("Edit", "Manage", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "DeleteUsersTask", new { id = item.Id })
+            </td>
+        </tr>
+
+    }
+</table>
+

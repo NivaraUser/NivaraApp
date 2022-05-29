@@ -1,0 +1,112 @@
+﻿@model Nivara.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="login-outer">
+        <div class="mx-auto">
+            <div class="card card0">
+                <div class="d-flex flex-lg-row flex-column-reverse">
+                    <div class="card card1 left-side">
+                        <div class="row justify-content-center px-3 mb-3">
+                            <div class="col-md-6 text-center">
+                                <img id="logo" src="https://cdn.shopify.com/s/files/1/0525/9542/5477/files/Nivara_Logo-01.svg" alt="">
+                            </div>
+                            <div class="col-md-6 text-right side-shape">
+
+                            </div>
+                        </div>
+                        @using (Html.BeginForm("Login", "EndUsers", FormMethod.Post, new { @class = "needs-validation mb-4", role = "form", @novalidate = "true" }))
+                        {
+                            <div class="row justify-content-center my-auto">
+                                <div class="col-md-8 col-10 my-5 lfty-sd">
+                                    <h3 class="heading pl-0">Login to your account</h3>
+                                    <h6 class="msg-info pl-0">Or <span>@Html.ActionLink("Create Account", "Manage", "EndUsers", null, new { @class = "text-reset", area = "User" })</span></h6>
+
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Your Email" , autocomplete = "off" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    @Html.PasswordFor(x => x.Password, new { @class = "form-control", @placeholder = "Password" , autocomplete = "off" })
+                                    <div class="form-group">
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="row justify-content-center my-2 pt-2 align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-checkbox mb-2">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                <label class="custom-control-label" for="customCheck1">Remember password</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-center frgt-outer">
+                                            <a href="#"><small class="text-muted forget-btn">Forgot Password?</small> <img src="~/Content/img/bckgrd-icon.png" alt=""></a>
+                                        </div>
+
+                                    </div>
+                                    <div class="row justify-content-center my-3 px-3"> <button type="submit" class="btn-block btn-color">Login</button> </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card card2 right-side">
+                        <div class="my-auto mx-md-5 px-md-5 right pt-4 right-sde">
+                            <div class="left-content-side">
+                                <p>We are more than </p>
+                                <p><strong>just a company</strong></p>
+                                <small>
+                                    Empower smarter design. Go to market faster.<br>
+                                    Spark design-driven innovation.
+                                </small>
+                                <a href="#" class="btn">Learn More</a>
+                            </div>
+                            <div class="login-img text-center">
+                                <img src="~/Content/img/login-img.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-------->
+            <div class="row justify-content-center last-footer">
+                <div class="col-md-6 text-left copyright">
+                    <p>© 2021 Nivara. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 footer-list text-right">
+                    <ul>
+                        <li><a href="">Contact Us</a> </li>
+                        <li>
+                            <a href="">Privacy policy </a>
+                        </li>
+                        <li><a href="">Site Map</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!---->
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
+

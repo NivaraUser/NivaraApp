@@ -1,0 +1,128 @@
+﻿@model List<Nivara.Models.EmployeesTaskModel>
+
+@{
+    ViewBag.Title = "Employees Tasks";
+}
+
+<!-- Start Content-->
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            @if (ViewBag.EmployeeId == 0)
+                            {
+
+                                <a href="@Url.Action("Manage","UserAssignTask")" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Assign Task</a>
+                            }
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end" style="float:right;">
+                                <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                                <button type="button" class="btn btn-light mb-2">Export</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="assigntask-datatable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="all">
+                                        Employee
+                                    </th>
+                                    <th>
+                                        Tasks
+                                    </th>
+                                    <th style="width: 85px;">Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @item.EmployeeName
+                                        </td>
+                                        <td>
+                                            @item.TaskName
+                                        </td>
+                                        <td class="table-action">
+
+                                            <a href="@Url.Action("Manage","UserAssignTask",new { @id=""+item.Id+""})" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            @if (ViewBag.EmployeeId == 0)
+                                            {
+                                                <a href="#" onclick="DeleteAssignedTask(@item.Id)" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+
+                        </table>
+                    </div> <!-- end preview-->
+                </div> <!-- end card body-->
+            </div> <!-- end card -->
+        </div><!-- end col-->
+    </div>
+    <!-- end row-->
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#assigntask-datatable").DataTable();
+    });
+    function DeleteAssignedTask(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this  record!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $(".nivaraLoader").show();
+             $.ajax({
+                 url: '@Url.Action("Delete", "UserAssignTask")',
+                data: { id: id },
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                success: function (data) {
+                $(".nivaraLoader").hide();
+                if (data.result)
+                window.location = data.url;
+                else
+                swal("Something went wrong!");
+                },
+                error: function (res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+                }
+                });
+
+                }
+                //else {
+                //    swal("Your imaginary file is safe!");
+                //}
+                });
+    }
+</script>
+

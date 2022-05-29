@@ -1,0 +1,428 @@
+﻿@model Nivara.Models.UsersTaskModel
+
+<div id="exampleModal" class="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color:#f4f5f7;height:700px;width:700px">
+            <div class="modal-header">
+                <h5 class="modal-title">Task Details</h5>
+                <button type="button" class="close jq-btn-close-popup" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="col-sm-12 pt-1 mt-1 jq-td-edit-projectname">
+                        @Html.HiddenFor(c => c.Id, new { id = "UserTaskId" })
+                        <span class="jq-span-value-projectname">
+                            <label class="jq-span-value-inner-projectname" style="color:#172b4d;background: #0000;border-radius: 3px;box-shadow: none;font-size: 20px;font-weight: 600;height: 32px;line-height: 24px;margin: -4px -8px;min-height: 24px;padding: 4px 8px;resize: none;">@Model.ProjectName</label>
+                        </span>
+                        <div class="jq-span-value-text-projectname ui-hide-el form-inline">
+                            <div class="section">
+                                @Html.TextBoxFor(c => c.ProjectName, new { @class = "form-control jq-txt-value editable-txt d-inblock input-size" })
+                            </div>
+                            @Html.ValidationMessageFor(c => c.ProjectName, null, new { @class = "invalid-feedback" })
+
+                        </div>
+                    </div>
+                    <div class="form-row" style="width:100%;">
+
+                        <div class="col-sm-8 pr-0 mr-0">
+                            <span style="color:#172b4d;font-size:16px;font-weight:600;">
+                                <i class="mdi mdi-format-list-bulleted-type text-muted" style="color:#172b4d;font-size:21px;"></i>
+
+                                Description
+                            </span>
+                            <div class="col-sm-12 pt-1 mt-1 jq-td-edit-projectdesc">
+                                <span class="jq-span-value-projectdesc">
+                                    <label class="jq-span-value-inner-projectdesc" style="width:100%">
+                                        @Html.Raw(Model.ProjectDescription)
+                                    </label>
+                                </span>
+                                <span class="jq-span-value-text-projectdesc ui-hide-el form-inline">
+                                    @Html.TextAreaFor(c => c.ProjectDescription, new { @class = "form-control", rows = "2", cols = "50" })
+                                    @Html.ValidationMessageFor(c => c.ProjectDescription, null, new { @class = "invalid-feedback" })
+                                </span>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                                Assigned To <br />
+                                @Html.Hidden("hdnAssignedEmployeeId", Model.AssignedEmployeeId)
+                                @Html.DropDownListFor(model => model.AssignedEmployeeId, new SelectList(Model.Employees, "Id", "UserName"), "Choose Employee", new { @class = "form-control", @required = "true" })
+                                @Html.ValidationMessageFor(z => z.AssignedEmployeeId, null, new { @class = "invalid-feedback" })
+                            </div>
+                            @*<span calss="jq-span-assigned-employee-name">@Model.AssignedEmployeeName</span>*@
+                            <div class="form-group">
+                                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                                Assign Date <br /><h6>@Model.AssignedDate?.ToString("dd/MM/yyyy")</h6>
+                            </div>
+                            <div class="form-group">
+                                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
+                                Due Date <br /><h6>@Model.DueDate?.ToString("dd/MM/yyyy")</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="width:100%;">
+                        <div class="col-sm-8 pr-0 mr-0">
+                            <div class="form-group" style="margin-left:15px;">
+                                @Html.TextAreaFor(c => c.TaskComment.CompanyName, new { @class = "form-controls d-inblock", @style = "width:422px", rows = "5", cols = "51", @placeholder = "Comments.." })
+                                @Html.ValidationMessageFor(c => c.TaskComment.CompanyName, null, new { @class = "invalid-feedback" })
+                            </div>
+                            <button type="button" class="btn btn-primary" style="margin-left:15px;" id="btnAddComments">Save</button>
+                            <br />
+                            <div class="form-group" id="divTaskComment" style="font-size: 16px; margin-top: 10px; margin-left: 15px; width: 424px;">
+                                <partial name="_TaskComment" model="@Model.TaskComments" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="file"
+                                       accept=".png,.jpg,.jpeg,.gif,.tif, .xls, .xlsx, .doc, .docx, .pdf, .ppt, .pptx"
+                                       class="form-control jq-attach-file" />
+                                @*<button style="width: 100%;max-width: 200px;border: none;border-radius: 20px;padding: 13px 0;font-size: 15px;color:#172b4d;">validatedCustomFile</button>*@
+                                @*<input type="file" class="custom-file-input jq-attach-file" id="validatedCustomFile">
+                                <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>*@
+                            </div>
+                            <div class="form-group" id="divTaskAttachments">
+                                <partial name="_TaskDocuments" model="@Model" />
+                            </div>
+                        </div>
+                    </div>
+                    @*
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+
+
+    $('.jq-btn-close-popup').click(function() {
+        $(".nivaraLoader").show();
+        var SearchText = $("#top-search").val();
+        var searchParameter = {
+            TaskStatusId: 0,
+            SearchText: SearchText
+        };
+        $.ajax({
+            url: '@Url.Action("GetUsersTaskList", "UsersTask")',
+            data: searchParameter,
+            datatype: "json",
+            type: "get",
+            contenttype: 'application/json',
+            async: true,
+            success: function(data) {
+                $(".nivaraLoader").hide();
+                $("#top-search").val('');
+                $(".jq-task-list-div").html('');
+                $(".jq-task-list-div").html(data);
+            },
+            error: function(res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+            }
+        });
+    });
+    $(".jq-span-value-projectname").click(function() {
+        $(".jq-span-value-text-projectname").removeClass("ui-hide-el");
+        $(".jq-span-value-projectname").addClass("ui-hide-el");
+        $("#ProjectName").removeClass('input-validation-error');
+    });
+    $(".jq-span-value-projectdesc").click(function() {
+        $(".jq-span-value-text-projectdesc").removeClass("ui-hide-el");
+        $(".jq-span-value-projectdesc").addClass("ui-hide-el");
+        $("#ProjectDescription").removeClass('input-validation-error');
+    });
+    $("#ProjectName").blur(function() {
+        debugger;
+        $(".nivaraLoader").show();
+        var projectName = $("#ProjectName").val();
+        var userTaskId = $("#UserTaskId").val();
+
+        if (projectName.trim() === "") {
+            $("#ProjectName").addClass('input-validation-error');
+            return false;
+        }
+        $.ajax({
+            url: '@Url.Action("SaveUserTaskPopupDetail", "UsersTask")',
+            data: { userTaskId: userTaskId, propertyName: "ProjectName", propertyValue: projectName },
+            datatype: "json",
+            type: "get",
+            contenttype: 'application/json',
+            async: true,
+            success: function(data) {
+                CancelEditValue();
+                $(".jq-span-value-inner-projectname").text(projectName);
+                //$("#exampleModal").show();
+                $(".nivaraLoader").hide();
+            },
+            error: function(res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+            }
+        });
+    });
+
+
+    $('#ProjectDescription').summernote({
+        height: 80,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link']],
+            ['table', ['table']],
+        ],
+        callbacks: {
+            onBlur: function(e) {
+                var p = e.target.parentNode.parentNode;
+                if (!(e.relatedTarget && $.contains(p, e.relatedTarget))) {
+                    // real blur the editor and what r u goin to do now
+                    debugger;
+                    var ProjectDescriptionData = $("#ProjectDescription").val();
+                    $(".nivaraLoader").show();
+                    var projectDescription = ProjectDescriptionData;// $("#ProjectDescription").val();
+                    var userTaskId = $("#UserTaskId").val();
+                    if (projectDescription.trim() === "") {
+                        $("#ProjectDescription").addClass('input-validation-error');
+                        return false;
+                    }
+
+                    $.ajax({
+                        url: '@Url.Action("SaveUserTaskPopupDetail", "UsersTask")',
+                        data: { userTaskId: userTaskId, propertyName: "ProjectDescription", propertyValue: projectDescription },
+                        datatype: "json",
+                        type: "get",
+                        contenttype: 'application/json',
+                        async: true,
+                        success: function(data) {
+                            $(".jq-span-value-inner-projectdesc").html(projectDescription);
+                            $(".jq-span-value-text-projectdesc").addClass("ui-hide-el");
+                            $(".jq-span-value-projectdesc").removeClass("ui-hide-el");
+                            $("#ProjectDescription").removeClass('input-validation-error');
+                            $(".nivaraLoader").hide();
+                        },
+                        error: function(res) {
+                            $(".nivaraLoader").hide();
+                            swal("Something went wrong!");
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+
+    //$("#ProjectDescription").blur(function () {
+    //    debugger;
+    //    var ProjectDescriptionData = CKEDITOR.instances['ProjectDescription'].getData();
+    //        $(".nivaraLoader").show();
+    //    var projectDescription = ProjectDescriptionData;
+    //        var userTaskId = $("#UserTaskId").val();
+    //        if (projectDescription.trim() === "") {
+    //            $("#ProjectDescription").addClass('input-validation-error');
+    //            return false;
+    //    }
+
+    //        $.ajax({
+    //            url: '@Url.Action("SaveUserTaskPopupDetail", "UsersTask")',
+    //            data: { userTaskId: userTaskId, propertyName: "ProjectDescription", propertyValue: projectDescription },
+    //            datatype: "json",
+    //            type: "get",
+    //            contenttype: 'application/json',
+    //            async: true,
+    //            success: function (data) {
+    //                $(".jq-span-value-inner-projectdesc").html(projectDescription);
+    //                $(".jq-span-value-text-projectdesc").addClass("ui-hide-el");
+    //                $(".jq-span-value-projectdesc").removeClass("ui-hide-el");
+    //                $("#ProjectDescription").removeClass('input-validation-error');
+    //                $(".nivaraLoader").hide();
+    //            },
+    //            error: function (res) {
+    //                $(".nivaraLoader").hide();
+    //                swal("Something went wrong!");
+    //            }
+    //        });
+    //});
+
+    function CancelEditValue() {
+        $(".jq-span-value-text-projectname").addClass("ui-hide-el");
+        $(".jq-span-value-projectname").removeClass("ui-hide-el");
+        $("#ProjectName").removeClass('input-validation-error');
+    }
+
+    $("#btnAddComments").click(function() {
+        $(".nivaraLoader").show();
+        var comment = $("#TaskComment_CompanyName").val();
+        var userTaskId = $("#UserTaskId").val();
+        if (comment.trim() === "") {
+            $("#TaskComment_CompanyName").addClass('input-validation-error');
+            return false;
+        }
+        var taskCommentsModel =
+        {
+            Comment: comment,
+            TaskId: userTaskId
+        };
+        $.ajax({
+            url: '@Url.Action("SaveUserTaskComments", "UsersTask")',
+            data: taskCommentsModel,
+            datatype: "json",
+            type: "get",
+            contenttype: 'application/json',
+            async: true,
+            success: function(data) {
+                $("#divTaskComment").html('');
+                $("#divTaskComment").html(data);
+                $("#TaskComment_CompanyName").val('');
+            },
+            error: function(res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+            }
+        });
+    });
+
+    $('.close').click(function() {
+        $('#exampleModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    });
+
+    $(document).click(function(e) {
+        if ($(e.target).is('#exampleModal')) {
+            $('#exampleModal').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }
+
+    });
+
+    $("#AssignedEmployeeId").change(function() {
+        $(".nivaraLoader").show();
+        var employeeId = $("#AssignedEmployeeId").val();
+        var userTaskId = $("#UserTaskId").val();
+        var hdnAssignedEmployeeId = $("#hdnAssignedEmployeeId").val();
+        if (employeeId === "" || employeeId === "0") {
+            $("#AssignedEmployeeId").val(hdnAssignedEmployeeId);
+            return false;
+        }
+        var employeesTaskModel =
+        {
+            EmpId: employeeId,
+            TaskId: userTaskId
+        };
+        $.ajax({
+            url: '@Url.Action("SaveAssignTaskToEmployee", "UsersTask")',
+            data: employeesTaskModel,
+            datatype: "json",
+            type: "get",
+            contenttype: 'application/json',
+            async: true,
+            success: function(data) {
+                $("#hdnAssignedEmployeeId").val(data.assignedEmployeeId)
+                $("#AssignedEmployeeId").val(data.assignedEmployeeId);
+                //$(".jq-span-assigned-employee-name").text(data.assignedEmployeeName);
+            },
+            error: function(res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+            }
+        });
+    });
+
+    $('.jq-attach-file').change(function() {
+
+        var userTaskId = $("#UserTaskId").val();
+        // Checking whether FormData is available in browser
+        if (window.FormData !== undefined) {
+
+            var fileUpload = $(".jq-attach-file").get(0);
+            var files = fileUpload.files;
+
+            // Create FormData object
+            var fileData = new FormData();
+
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            // Adding one more key to FormData object
+            fileData.append('userTaskId', userTaskId);
+
+            $.ajax({
+                url: '@Url.Action("UploadDocument", "UsersTask")',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                async: false,
+                success: function(data) {
+                    $(".jq-attach-file").val('');
+                    $("#divTaskAttachments").html('');
+                    $("#divTaskAttachments").html(data);
+                },
+                error: function(err) {
+                }
+            });
+        } else {
+            $(".nivaraLoader").hide();
+            swal("Something went wrong!");
+        }
+    });
+
+    function DeleteUsersTaskDocument(id, userTaskId) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this record!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $(".nivaraLoader").show();
+                    $.ajax({
+                        url: '@Url.Action("DeleteUsersTaskDocument", "UsersTask")',
+                        data: { id: id, userTaskId: userTaskId },
+                        datatype: "json",
+                        type: "get",
+                        contenttype: 'application/json',
+                        async: true,
+                        success: function(data) {
+                            $(".nivaraLoader").hide();
+                            $("#divTaskAttachments").html('');
+                            $("#divTaskAttachments").html(data);
+                            $("#attachmentsShowHide").text('Hide');
+                            $(".jq-table-attachments").removeClass('ui-hide-el');
+                        },
+                        error: function(res) {
+                            $(".nivaraLoader").hide();
+                            swal("Something went wrong!");
+                        }
+                    });
+
+                }
+                //else {
+                //    swal("Your imaginary file is safe!");
+                //}
+            });
+    }
+
+
+</script>

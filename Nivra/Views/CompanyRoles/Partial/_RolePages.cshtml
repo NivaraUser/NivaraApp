@@ -1,0 +1,27 @@
+﻿@model Nivara.Models.CompanyRolesModel
+
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+
+    @Html.HiddenFor(x => x.Id)
+    @for (int i=0;i<Model.Modules.Count;i++)
+    {
+        <tr>
+            <td>
+                <input type="hidden" name="Modules[@i].Id" value="@Model.Modules[i].Id" />
+                @Model.Modules[i].ModuleName
+            </td>
+            <td>
+                @Html.CheckBoxFor(x => Model.Modules[i].IsAssign)
+            </td>
+        </tr>
+
+    }
+</table>

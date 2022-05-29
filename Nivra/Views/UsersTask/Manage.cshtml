@@ -1,0 +1,235 @@
+﻿@model Nivara.Models.UsersTaskModel
+@{
+    ViewBag.Title = "Create Project";
+
+}
+
+   <link href="~/css/Main.css" rel="stylesheet" type="text/css" />
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right" style="display:none;">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Projects</a></li>
+                        <li class="breadcrumb-item active">Create Project</li>
+                    </ol>
+                </div>
+                <h4 class="page-title" style="font-size:32px;font-family:Poppins;font-weight:600;color:#0F0F0F">Create Project</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @using (Html.BeginForm("Manage", "UsersTask", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation mb-4", role = "form", @novalidate = "true" }))
+                    {
+                        <div class="row form-section">
+                            <div class="col-xl-6">
+                                <div class="mb-3">
+                                    <label for="projectname" class="form-label form-section-label" >Name</label>
+                                    @Html.TextBoxFor(x => x.ProjectName, new { @class = "form-control form-section-parts", @placeholder = "Enter project name", @required = "true"})
+                                    @Html.ValidationMessageFor(m => m.ProjectName, "", new { @class = "text-danger" })
+
+                                    @*<input type="text" id="projectname" class="form-control" placeholder="Enter project name">*@
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="project-overview" class="form-label form-section-label" >Overview</label>
+                                    @Html.TextAreaFor(x => x.ProjectDescription, new { @class = "form-control form-section-parts", rows = "5", @placeholder = "Enter some brief about project..", @required = "true",  })
+                                    @Html.ValidationMessageFor(m => m.ProjectDescription, "", new { @class = "text-danger new-danger",})
+
+                                    @*<textarea class="form-control" id="project-overview" rows="5" placeholder="Enter some brief about project.."></textarea>*@
+                                </div>
+                                <div class="mb-3 position-relative" id="datepicker1">
+                                    <label class="form-label form-section-label">Start Date</label>
+                                    <input type="text" class="form-control form-section-parts"  name="StartDate" data-provide="datepicker" data-date-container="#datepicker1" data-date-autoclose="true" value="@Model.StartDateFormatted" required>
+                                    @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label form-section-label" >Company</label>
+                                    @if (ViewBag.IsAdmin != null && ViewBag.IsAdmin && ViewBag.EmployeeId == 0)
+                                    {
+                                        @Html.DropDownListFor(model => model.CompanyId, new SelectList(Model.Companies, "Id", "Name"), "Choose Company", new { @class = "form-control form-section-parts", @required = "true",})
+                                        @Html.ValidationMessageFor(z => z.CompanyId, null, new { @class = "invalid-feedback" })
+                                    }
+                                    else
+                                    {
+                                        @Html.HiddenFor(model => model.CompanyId)
+                                        @Html.DropDownListFor(model => model.CompanyId, new SelectList(Model.Companies, "Id", "Name"), "Choose Company", new { @class = "form-control form-section-parts", @disabled = "disabled",})
+                                    }
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label form-section-label" >Task Status</label>
+                                    @if (ViewBag.IsAdmin != null && ViewBag.IsAdmin)
+                                    {
+                                        @Html.DropDownListFor(model => model.TaskStatusId, new SelectList(Model.TaskStatus, "Id", "Name"), "Choose Status", new { @class = "form-control form-section-parts", @required = "true", })
+                                        @Html.ValidationMessageFor(z => z.TaskStatusId, null, new { @class = "invalid-feedback" })
+                                    }
+                                    else
+                                    {
+                                        @Html.HiddenFor(model => model.TaskStatusId)
+                                        @Html.DropDownListFor(model => model.TaskStatusId, new SelectList(Model.TaskStatus, "Id", "Name"), "Choose Status", new { @class = "form-control form-section-parts", @disabled = "disabled", })
+                                    }
+                                </div>
+                            </div> <!-- end col-->
+                            <div class="col-xl-6">
+                                <div class="mb-3 mt-3 mt-xl-0">
+                                    <label for="projectname" class="mb-0 form-section-label" >Avatar</label>
+                                    <p class="text-muted font-14 thumbnail" >Recommended thumbnail size 800x400 (px).</p>
+
+                                    <div class="dropzone dz-clickable form-section-label-dropzone" id="myAwesomeDropzone" >
+                                        <div class="fallback">
+                                            <input name="postedFiles" id="file" type="file" multiple style="display:none" />
+                                        </div>
+
+                                        <div class="dz-message needsclick" onclick="uploadFile()" >
+                                            <i class="h3 text-muted dripicons-cloud-upload" ></i>
+                                            <h4>Drop files here or click to upload.</h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- Preview -->
+                                    <div class="dropzone-previews mt-3" id="file-previews"></div>
+
+                                    <!-- file preview template -->
+                                    <div class="d-none" id="uploadPreviewTemplate" name="postedFiles">
+                                        <div class="card mt-1 mb-0 shadow-none border">
+                                            <div class="p-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto">
+                                                        <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
+                                                    </div>
+                                                    <div class="col ps-0">
+                                                        <a href="javascript:void(0);" class="text-muted fw-bold" data-dz-name></a>
+                                                        <p class="mb-0" data-dz-size></p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <!-- Button -->
+                                                        <a href="" class="btn btn-link btn-lg text-muted" data-dz-remove>
+                                                            <i class="dripicons-cross"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end file preview template -->
+                                </div>
+                                <label class="form-label form-section-label" >Existing Docs :</label> <br />
+                                @foreach (var doc in Model.UsersTaskDocuments)
+                                {
+
+                                    <a href="~/Documents/@doc.DocumentName" target="_blank">@doc.DocumentName</a><br />
+                                }
+                                <!-- Date View -->
+                                <div class="mb-3 position-relative" id="datepicker2">
+                                    <label class="form-label form-section-label" >Due Date</label>
+                                    <input type="text" class="form-control form-section-parts" name="DueDate" data-provide="datepicker" data-date-container="#datepicker2" data-date-autoclose="true" value="@Model.DueDateFormatted" required">
+                                    @Html.ValidationMessageFor(m => m.DueDate, "", new { @class = "text-danger" })
+                                </div>
+                                @*<div class="row justify-content-center my-3 px-3"> <button type="submit" class="btn-block btn-color">Submit</button> </div>*@
+                                <button type="submit" id="submitBtn" style="border-radius: 10px; width:137px;background:unset;border:1px solid #2E51CD; color:#2E51CD;box-shadow:unset" class="btn btn-xl btn-info">Submit</button>
+
+
+                            </div> <!-- end col-->
+                        </div>
+                        <!-- end row -->
+                    }
+                </div> <!-- end card-body -->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+
+    </div>
+    <!-- end row-->
+    <div class="rightbar-overlay"></div>
+    <!-- /End-bar -->
+    <!-- bundle -->
+
+</div>
+<script src="~/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#ProjectDescription").summernote({
+            height: 80,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']],
+                ['table', ['table']],
+            ]
+        });
+    });
+</script>
+<script>
+
+
+
+    var formdata = new FormData(); //FormData object
+    $(document).ready(function () {
+
+        $("#fileInput").on("change", function () {
+            var fileInput = document.getElementById('fileInput');
+            //Iterating through each files selected in fileInput
+            for (i = 0; i < fileInput.files.length; i++) {
+
+                var sfilename = fileInput.files[i].name;
+                let srandomid = Math.random().toString(36).substring(7);
+
+                formdata.append(sfilename, fileInput.files[i]);
+
+                var markup = "<tr id='" + srandomid + "'><td>" + sfilename + "</td><td><a href='#' onclick='DeleteFile(\"" + srandomid + "\",\"" + sfilename +
+                    "\")'>X</a></td></tr>"; // Binding the file name
+                $("#FilesList tbody").append(markup);
+
+            }
+            chkatchtbl();
+            $('#fileInput').val('');
+        });
+
+        $("#btnupload").click(function () {
+            formdata.append('uploadername', $('#txtuploader').val());
+            $.ajax({
+                url: '/Home/UploadFiles',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: formdata,
+                async: false,
+                success: function (result) {
+                    if (result != "") {
+                        alert(result);
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        });
+    });
+    function DeleteFile(Fileid, FileName) {
+        formdata.delete(FileName)
+        $("#" + Fileid).remove();
+        chkatchtbl();
+    }
+    function chkatchtbl() {
+        if ($('#FilesList tr').length > 1) {
+            $("#FilesList").css("visibility", "visible");
+        } else {
+            $("#FilesList").css("visibility", "hidden");
+        }
+    }
+
+    function uploadFile() {
+        $("#file").click();
+    }
+</script>

@@ -1,0 +1,214 @@
+﻿@model Nivara.Models.PreDefinedTaskViewModel
+
+@{
+    ViewBag.Title = "Pre Defined Task";
+}
+
+<style>
+
+    .red {
+        color: red;
+    }
+</style>
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+
+                </div>
+                <h2 class="page-title" style="font-size:28px;font-family:Poppins;font-weight:600;color:#0F0F0F;">Hey @Model.UserName, Welcome!!!</h2>
+                <h4 class="page-title" style="font-size:18px;font-family:Poppins;font-weight:600;color:#0F0F0F;">Task ideas for you</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row mb-2">
+        <div class="col-sm-4">
+            @*@Html.ActionLink("Create New", "Manage");*@
+            @if (ViewBag.IsAdmin)
+            {
+                <a href="@Url.ActionLink("Manage", "PreDefinedTask")" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i>Create PreDefined Task</a>
+            }
+        </div>
+        <div class="col-sm-8">
+            
+        </div><!-- end col-->
+    </div>
+    <!-- end row-->
+
+    <div class="row jq-task-list-div" >
+        <partial name="_TaskList" model="@Model.PreDefinedTasks" />
+    </div>
+</div>
+
+<div id="divtaskDetail">    
+</div>
+
+<script>
+    $(document).ready(function () {
+            $(".jq-btn-top-search").on('click',function () {
+            $(".nivaraLoader").show();
+                var SearchText = $(".jq-txt-top-search").val();
+            var searchParameter = {
+                TaskStatusId: 0,
+                SearchText: SearchText
+            };
+                $.ajax({
+                    url: '@Url.Action("GetPreDefinedTaskList", "PreDefinedTask")',
+                    data: searchParameter,
+                    datatype: "json",
+                    type: "get",
+                    contenttype: 'application/json',
+                    async: true,
+                    success: function (data) {
+                        $(".nivaraLoader").hide();
+                        $(".jq-txt-top-search").val('');
+                        $(".jq-task-list-div").html('');
+                        $(".jq-task-list-div").html(data);
+                    },
+                    error: function (res) {
+                        $(".nivaraLoader").hide();
+                        swal("Something went wrong!");
+                    }
+                });
+            });
+
+        $(".jq-txt-top-search").autocomplete({
+            source: function (request, response) {
+                if (request.term.length < 5) {
+                        return false;
+                    }
+                    $.ajax({
+                        url: '@Url.Action("AutoCompleteProjectList", "PreDefinedTask")',
+                        data: { projectName: request.term},
+                        datatype: "json",
+                        type: "get",
+                        contenttype: 'application/json',
+                        async: true,
+                        success: function (data) {
+                            if (data.length > 0) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.trim(),
+                                        val: item.trim()
+                                    };
+                                }))
+                            }
+                        },
+                        error: function (res) {
+                            $(".nivaraLoader").hide();
+                            swal("Something went wrong!");
+                        }
+                    });
+                },
+            select: function (e, i) {
+                    if (i.item.val == 0) {
+                        return false;
+                    } else {
+                        $(".jq-txt-top-search").val(i.item.val);
+                    }
+                }
+            });
+    });
+
+    function DeletePreDefinedTask(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this  record!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $(".nivaraLoader").show();
+                    $.ajax({
+                        url: '@Url.Action("DeletePreDefinedTask", "PreDefinedTask")',
+                        data: { id: id },
+                        datatype: "json",
+                        type: "get",
+                        contenttype: 'application/json',
+                        async: true,
+                        success: function (data) {
+                            $(".nivaraLoader").hide();
+                            if (data.result)
+                                window.location = data.url;
+                            else
+                                swal("Something went wrong!");
+                        },
+                        error: function (res) {
+                            $(".nivaraLoader").hide();
+                            swal("Something went wrong!");
+                        }
+                    });
+
+                }
+                //else {
+                //    swal("Your imaginary file is safe!");
+                //}
+            });
+    }
+
+    function GetUsersTaskList(taskStatusId) {
+        $(".nivaraLoader").show();
+        var SearchText = $("#top-search").val();
+        var searchParameter = {
+            TaskStatusId: taskStatusId,
+            SearchText: ''
+        };
+        $.ajax({
+            url: '@Url.Action("GetUsersTaskList", "PreDefinedTask")',
+            data: searchParameter,
+            datatype: "json",
+            type: "get",
+            contenttype: 'application/json',
+            async: true,
+            success: function (data) {
+                $(".nivaraLoader").hide();
+                $(".jq-task-list-div").html('');
+                $(".jq-task-list-div").html(data);
+            },
+            error: function (res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+            }
+        });
+    }
+
+    function ShowTaskDetails(id) {
+        $(".nivaraLoader").show();
+        $.ajax({
+            url: '@Url.Action("ShowTaskDetails", "PreDefinedTask")',
+            data: { taskId: id },
+            datatype: "json",
+            type: "get",
+            contenttype: 'application/json',
+            async: true,
+            success: function (data) {
+                $(".nivaraLoader").hide();
+                $("#divtaskDetail").html('');
+                $("#divtaskDetail").html(data);
+                $(".jq-span-value-text-projectname").addClass("ui-hide-el");
+                $(".jq-span-value-projectname").removeClass("ui-hide-el");
+                $("#exampleModal").modal('show');
+            },
+            error: function (res) {
+                $(".nivaraLoader").hide();
+                swal("Something went wrong!");
+            }
+        });
+    }
+</script>
+<style>
+    .modal-dialog {
+        width: 800px;
+    }
+
+    .ui-hide-el {
+        display: none;
+    }
+</style>

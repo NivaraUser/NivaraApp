@@ -1,0 +1,32 @@
+﻿@model Nivara.Models.EmployeesTaskModel
+@{
+    ViewBag.Title = "Manage Employee Tasks";
+}
+<div class="card card1 left-side">
+    @using (Html.BeginForm("Manage", "UserAssignTask", FormMethod.Post, new { @class = "needs-validation mb-4", role = "form", @novalidate = "true" }))
+    {
+        <div class="row justify-content-center my-auto">
+            <div class="col-md-8 col-10 my-5 lfty-sd">
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => model.EmpId, new SelectList(Model.Employees, "Id", "UserName"), "Choose Employee", new { @class = "form-control", @required = "true" })
+                        @Html.ValidationMessageFor(z => z.EmpId, null, new { @class = "invalid-feedback" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => model.TaskId, new SelectList(Model.UsersTasks, "Id", "Name"), "Choose User Tasks", new { @class = "form-control", @required = "true" })
+                        @Html.ValidationMessageFor(z => z.TaskId, null, new { @class = "invalid-feedback" })
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" style="border-radius: 10px; width: 12%; margin-left:300px; margin-top:40px" class="btn btn-xl btn-info">Submit</button>
+
+                @*<div class="row justify-content-center my-3 px-3"> <button type="submit" class="btn-block btn-color">Submit</button> </div>*@
+                <div class="row justify-content-center my-5 px-5 social-icns">
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

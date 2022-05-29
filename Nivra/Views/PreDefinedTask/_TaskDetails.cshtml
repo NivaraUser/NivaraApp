@@ -1,0 +1,251 @@
+﻿@model Nivara.Models.PreDefinedTaskModel
+
+<div id="exampleModal" class="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color:#f4f5f7;height:700px;width:700px">
+            <div class="modal-header">
+                <h5 class="modal-title">Pre Defined Task Details</h5>
+                <button type="button" class="close jq-btn-close-popup" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="col-sm-12 pt-1 mt-1 jq-td-edit-jobtitle">
+                        @Html.HiddenFor(c => c.Id, new { id = "PreDefinedTaskId" })
+                        <span class="jq-span-value-jobtitle">
+                            <label class="jq-span-value-inner-jobtitle" style="color:#172b4d;background: #0000;border-radius: 3px;box-shadow: none;font-size: 20px;font-weight: 600;height: 32px;line-height: 24px;margin: -4px -8px;min-height: 24px;padding: 4px 8px;resize: none;">@Model.JobTitle</label>
+                        </span>
+                        <div class="jq-span-value-text-jobtitle ui-hide-el form-inline">
+                            <div class="section">
+                                @Html.TextBoxFor(c => c.JobTitle, new { @class = "form-control jq-txt-value editable-txt d-inblock input-size" })
+                            </div>
+                            @Html.ValidationMessageFor(c => c.JobTitle, null, new { @class = "invalid-feedback" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" style="width:100%;">
+                    <div class="col-sm-12 pt-1 mt-1">
+                        <span style="color:#172b4d;font-size:16px;font-weight:600;">
+                            <i class="mdi mdi-format-list-bulleted-type text-muted" style="color:#172b4d;font-size:21px;"></i>
+                            Description
+                        </span>
+                        <div class="col-sm-12 pt-1 mt-1 jq-td-edit-servicedesc">
+                            <span class="jq-span-value-servicedesc">
+                                <label class="jq-span-value-inner-servicedesc" style="width:100%">
+                                    @Html.Raw(@Model.ServiceDescription)
+                                </label>
+                            </span>
+                            <span class="jq-span-value-text-servicedesc ui-hide-el form-inline">
+                                @Html.TextAreaFor(c => c.ServiceDescription, new { @class = "form-control", rows = "2", cols = "50" })
+                                @Html.ValidationMessageFor(c => c.ServiceDescription, null, new { @class = "invalid-feedback" })
+
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" style="width:100%;">
+                    <div class="col-sm-12 pt-1 mt-1">
+                        <span style="color:#172b4d;font-size:16px;font-weight:600;">
+                            <i class="mdi mdi-format-list-bulleted-type text-muted" style="color:#172b4d;font-size:21px;"></i>
+                            ETD
+                        </span>
+                        <div class="col-sm-12 pt-1 mt-1 jq-td-edit-etd">
+                            <span class="jq-span-value-etd">
+                                <label class="jq-span-value-inner-etd" style="width:100%">@Model.ETD</label>
+                            </span>
+                            <span class="jq-span-value-text-etd ui-hide-el form-inline">
+                                @Html.TextAreaFor(c => c.ETD, new { @class = "form-control", @style = "width:600px", rows = "2", cols = "50" })
+                                @Html.ValidationMessageFor(c => c.ETD, null, new { @class = "invalid-feedback" })
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" style="width:100%;">
+                    <div class="col-sm-12 pt-1 mt-1">
+                        <span style="color:#172b4d;font-size:16px;font-weight:600;">
+                            <i class="mdi mdi-format-list-bulleted-type text-muted" style="color:#172b4d;font-size:21px;"></i>
+                            Logo
+                        </span>
+                        <div class="col-sm-12 pt-1 mt-1"><img src="~/PreDefinedTaskLogo/@Model.LogoName" alt="logo" style="width:50px; height:50px;" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+            $('.jq-btn-close-popup').click(function () {
+                $(".nivaraLoader").show();
+                var SearchText = $("#top-search").val();
+                var searchParameter = {
+                    SearchText: SearchText
+                };
+                $.ajax({
+                    url: '@Url.Action("GetPreDefinedTaskList", "PreDefinedTask")',
+                    data: searchParameter,
+                    datatype: "json",
+                    type: "get",
+                    contenttype: 'application/json',
+                    async: true,
+                    success: function (data) {
+                        $(".nivaraLoader").hide();
+                        $("#top-search").val('');
+                        $(".jq-task-list-div").html('');
+                        $(".jq-task-list-div").html(data);
+                    },
+                    error: function (res) {
+                        $(".nivaraLoader").hide();
+                        swal("Something went wrong!");
+                    }
+                });
+            });
+        $(".jq-span-value-jobtitle").click(function () {
+            $(".jq-span-value-text-jobtitle").removeClass("ui-hide-el");
+            $(".jq-span-value-jobtitle").addClass("ui-hide-el");
+            $("#JobTitle").removeClass('input-validation-error');
+        });
+            $(".jq-span-value-servicedesc").click(function () {
+                $(".jq-span-value-text-servicedesc").removeClass("ui-hide-el");
+                $(".jq-span-value-servicedesc").addClass("ui-hide-el");
+            $("#ServiceDescription").removeClass('input-validation-error');
+            });
+
+            $(".jq-span-value-etd").click(function () {
+                $(".jq-span-value-text-etd").removeClass("ui-hide-el");
+                $(".jq-span-value-etd").addClass("ui-hide-el");
+                $("#ETD").removeClass('input-validation-error');
+            });
+
+            $("#JobTitle").blur(function () {
+            $(".nivaraLoader").show();
+                var jobTitle = $("#JobTitle").val();
+                var preDefinedTaskId = $("#PreDefinedTaskId").val();
+
+                if (jobTitle.trim() === "") {
+                $("#JobTitle").addClass('input-validation-error');
+                return false;
+            }
+            $.ajax({
+                url: '@Url.Action("SavePredefinedTaskPopupDetail", "PreDefinedTask")',
+                data: { preDefinedTaskId: preDefinedTaskId, propertyName: "JobTitle", propertyValue: jobTitle },
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                success: function (data) {
+                    CancelEditValue();
+                    $(".jq-span-value-inner-jobtitle").text(jobTitle);
+                    $(".nivaraLoader").hide();
+                },
+                error: function (res) {
+                    $(".nivaraLoader").hide();
+                    swal("Something went wrong!");
+                }
+            });
+        });
+
+
+
+    $('#ServiceDescription').summernote({
+        height: 80,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link']],
+            ['table', ['table']],
+        ],
+        callbacks: {
+            onBlur: function(e) {
+                var p = e.target.parentNode.parentNode;
+                if (!(e.relatedTarget && $.contains(p, e.relatedTarget))) {
+
+                    var ServiceDescriptionData = $("#ServiceDescription").val();
+                    $(".nivaraLoader").show();
+                    var serviceDescription = ServiceDescriptionData;//$("#ServiceDescription").val();
+                    var preDefinedTaskId = $("#PreDefinedTaskId").val();
+
+                    if (serviceDescription.trim() === "") {
+                        $("#ServiceDescription").addClass('input-validation-error');
+                        return false;
+                    }
+                    $.ajax({
+                        url: '@Url.Action("SavePredefinedTaskPopupDetail", "PreDefinedTask")',
+                        data: { preDefinedTaskId: preDefinedTaskId, propertyName: "ServiceDescription", propertyValue: serviceDescription },
+                        datatype: "json",
+                        type: "get",
+                        contenttype: 'application/json',
+                        async: true,
+                        success: function(data) {
+                            $(".jq-span-value-inner-servicedesc").html(serviceDescription);
+                            $(".jq-span-value-text-servicedesc").addClass("ui-hide-el");
+                            $(".jq-span-value-servicedesc").removeClass("ui-hide-el");
+                            $("#ServiceDescription").removeClass('input-validation-error');
+                            $(".nivaraLoader").hide();
+                        },
+                        error: function(res) {
+                            $(".nivaraLoader").hide();
+                            swal("Something went wrong!");
+                        }
+                    });
+
+
+
+                }
+            }
+        }
+    });
+
+       $("#ETD").blur(function () {
+            $(".nivaraLoader").show();
+            var etd = $("#ETD").val();
+                var preDefinedTaskId = $("#PreDefinedTaskId").val();
+
+            if (etd.trim() === "") {
+                    $("#ETD").addClass('input-validation-error');
+                return false;
+            }
+            $.ajax({
+                url: '@Url.Action("SavePredefinedTaskPopupDetail", "PreDefinedTask")',
+                data: { preDefinedTaskId: preDefinedTaskId, propertyName: "ETD", propertyValue: etd },
+                datatype: "json",
+                type: "get",
+                contenttype: 'application/json',
+                async: true,
+                success: function (data) {
+                    $(".jq-span-value-inner-etd").text(etd);
+                    $(".jq-span-value-text-etd").addClass("ui-hide-el");
+                    $(".jq-span-value-etd").removeClass("ui-hide-el");
+                    $("#ETD").removeClass('input-validation-error');
+                    $(".nivaraLoader").hide();
+                },
+                error: function (res) {
+                    $(".nivaraLoader").hide();
+                    swal("Something went wrong!");
+                }
+            });
+        });
+
+        function CancelEditValue() {
+            $(".jq-span-value-text-jobtitle").addClass("ui-hide-el");
+            $(".jq-span-value-jobtitle").removeClass("ui-hide-el");
+            $("#JobTitle").removeClass('input-validation-error');
+        }
+
+        $('.close').click(function () {
+            $('#exampleModal').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+
+        $(document).click(function (e) {
+            if ($(e.target).is('#exampleModal')) {
+                $('#exampleModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }
+
+        });
+
+</script>

@@ -1,0 +1,110 @@
+﻿@model List<Nivara.Models.UsersTaskModel>
+
+@{
+    ViewBag.Title = "Users Task";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+<style>
+    table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+        background-color: white;
+        color: #6c757d;
+    }
+</style>
+<!-- Start Content-->
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            @*<a href="@Url.Action("Manage","Employee")" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Create Task</a>*@
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end" style="float:right;">
+                                <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                                <button type="button" class="btn btn-light mb-2">Export</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="companytasks-datatable">
+                            <thead class="table-light">
+                                <tr>
+                                    @*<th class="all" style="width: 20px;">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="customCheck1">
+                                            <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                        </div>
+                                    </th>*@
+                                    <th class="all">
+                                        Project Name
+                                    </th>
+                                    <th>
+                                        Project Description
+                                    </th>
+                                    <th>
+                                        Document Name
+                                    </th>
+                                    <th style="width: 85px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        @*<td>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="@item.Id">
+                                                <label class="form-check-label" for="@item.Id">&nbsp;</label>
+                                            </div>
+                                        </td>*@
+
+                                        <td>
+                                            @item.ProjectName
+                                        </td>
+                                        <td>
+                                            @item.ProjectDescription
+                                        </td>
+                                        <td>
+                                            @foreach (var doc in @item.UsersTaskDocuments)
+                                            {
+
+                                                @doc.DocumentName
+                                            }
+                                        </td>
+
+                                        <td class="table-action">
+                                            @Html.ActionLink("Buy", "BuyCompanyTasks", new { id = item.Id })
+                                            @*<a href="@Url.Action("Manage","Employee",new { @id=""+item.Id+""})" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <a href="javascript:void(0);" onclick="DeleteEmployee(@item.Id)" class="action-icon"> <i class="mdi mdi-delete"></i></a>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+</div>
+
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#companytasks-datatable").DataTable();
+    });
+</script>
